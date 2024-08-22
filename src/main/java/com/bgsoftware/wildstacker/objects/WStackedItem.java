@@ -442,7 +442,10 @@ public final class WStackedItem extends WAsyncStackedObject<Item> implements Sta
         if (itemStack.getType().name().contains("STEW") || itemStack.getType().name().contains("SOUP"))
             ItemUtils.stackStew(itemStack, inventory);
 
-        return additionalItems.values().stream().findFirst().orElse(new ItemStack(Material.STONE, 0)).getAmount();
+        if (additionalItems.isEmpty())
+            return 0;
+
+        return additionalItems.values().iterator().next().getAmount();
     }
 
 }

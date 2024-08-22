@@ -1,4 +1,4 @@
-package com.bgsoftware.wildstacker.nms.v1_20_4;
+package com.bgsoftware.wildstacker.nms.v1_21;
 
 import com.bgsoftware.common.reflection.ReflectField;
 import com.bgsoftware.wildstacker.WildStackerPlugin;
@@ -9,6 +9,7 @@ import com.bgsoftware.wildstacker.listeners.ServerTickListener;
 import com.bgsoftware.wildstacker.nms.NMSAdapter;
 import com.bgsoftware.wildstacker.nms.entity.INMSEntityEquipment;
 import com.bgsoftware.wildstacker.nms.v1_20_3.entity.NMSEntityEquipmentImpl;
+import com.bgsoftware.wildstacker.nms.v1_21.enchantment.GlowEnchantment;
 import com.bgsoftware.wildstacker.objects.WStackedEntity;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ResolvableProfile;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.craftbukkit.CraftRegistry;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -76,12 +78,18 @@ public final class NMSAdapterImpl implements NMSAdapter {
 
     @Override
     public Enchantment getGlowEnchant() {
-        return null;
+        return new GlowEnchantment();
     }
 
     @Override
     public Enchantment createGlowEnchantment() {
-        return null;
+        Enchantment enchantment = getGlowEnchant();
+
+        Map<NamespacedKey, Enchantment> registryCache = REGISTRY_CACHE.get(Registry.ENCHANTMENT);
+
+        registryCache.put(enchantment.getKey(), enchantment);
+
+        return enchantment;
     }
 
     @Override
